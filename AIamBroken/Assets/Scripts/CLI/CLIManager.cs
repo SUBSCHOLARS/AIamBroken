@@ -96,19 +96,19 @@ public class CLIManager : MonoBehaviour
 
     private void ProcessCommand(string command)
     {
-        string response = "Command received: " + command;
+        string response = " > Command received: " + command;
         AddHistoryEntry(response);
 
         // 必要に応じてコマンドに応じた処理を追加
         if (command == "--help window")
         {
-            AddHistoryEntry("Available commands:");
-            AddHistoryEntry("--help window: Display this help message.");
+            AddHistoryEntry(" > Available commands:");
+            AddHistoryEntry(" > --help window: Display this help message.");
             // 他のコマンドを追加
         }
         else
         {
-            AddHistoryEntry("Invalid command.");
+            AddHistoryEntry(" > "+command+" はコマンドリストに存在しない不正な呼び出しです.");
         }
     }
 
