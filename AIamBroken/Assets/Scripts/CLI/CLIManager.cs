@@ -8,29 +8,38 @@ public class CLIManager : MonoBehaviour
 {
     [Header("UI Components")]
     [SerializeField] private TMP_InputField commandInput;
-    [SerializeField] private RectTransform historyContent;//ScrollView内のContentのRectTransform
+    [SerializeField] private RectTransform historyContent; // ScrollView内のContentのRectTransform
     [SerializeField] private GameObject historyTextPrefab;
     [SerializeField] private ScrollRect scrollRect;
 
     [Header("Initial Setup Sequence")]
     [Tooltip("起動時にセットアップシーケンスを再生するか")]
     [SerializeField] private bool playSetupSequence = true;
-    
+
     [Tooltip("起動シーケンスで表示するログの行")]
     [TextArea(5, 15)] // Inspectorで複数行入力しやすくするための属性
     [SerializeField] private string[] setupLogLines;
-    
+
     [Tooltip("各行を表示する最小の遅延時間")]
     [SerializeField] private float minDelay = 0.1f;
-    
+
     [Tooltip("各行を表示する最大の遅延時間")]
     [SerializeField] private float maxDelay = 0.5f;
+
+    private bool isCursorVisible = true; // カーソルの点滅状態
+    private bool isInputActive = false; // 入力中かどうか
+    private AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
-        //InputFieldでEnterが押された時のイベントを登録
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(audioSource.clip);
+
+        // InputFieldでEnterが押された時のイベントを登録
         commandInput.onEndEdit.AddListener(OnCommandSubmit);
-         // 起動シーケンスを再生
+
+        // 起動シーケンスを再生
         if (playSetupSequence)
         {
             StartCoroutine(RunSetupSequence());
@@ -41,8 +50,14 @@ public class CLIManager : MonoBehaviour
             commandInput.interactable = true;
             RefocusInput();
         }
-        
+
+        // カーソル点滅を開始
+        StartCoroutine(CursorBlink());
     }
+    void Update()
+    { 
+    }
+
     // --- 起動シーケンス用のコルーチン ---
     private IEnumerator RunSetupSequence()
     {
@@ -67,49 +82,68 @@ public class CLIManager : MonoBehaviour
 
     private void OnCommandSubmit(string command)
     {
-        if (!Input.GetKeyDown(KeyCode.Return) && !Input.GetKeyDown(KeyCode.KeypadEnter)) return;
+        if (string.IsNullOrWhiteSpace(command)) return;
 
-        if (string.IsNullOrWhiteSpace(command))
-        {
-            //入力欄を再フォーカス
-            RefocusInput();
-            return;
-        }
-        //コマンド履歴を追加
+        // コマンド履歴を追加
         AddHistoryEntry("> " + command);
-        //コマンドを処理する
+
+        // コマンドを処理する
         ProcessCommand(command);
-        //入力欄をクリアして再フォーカス
+
+        // 入力欄をクリアして再フォーカス
         RefocusInput();
     }
+
     private void ProcessCommand(string command)
     {
         string response = "Command received: " + command;
-        //..コマンドに応じた処理
         AddHistoryEntry(response);
+
+        // 必要に応じてコマンドに応じた処理を追加
+        if (command == "--help window")
+        {
+            AddHistoryEntry("Available commands:");
+            AddHistoryEntry("--help window: Display this help message.");
+            // 他のコマンドを追加
+        }
+        else
+        {
+            AddHistoryEntry("Invalid command.");
+        }
     }
+
     private void AddHistoryEntry(string text)
     {
-        //テキストプレファブから新しいインスタンスを生成
+        // テキストプレファブから新しいインスタンスを生成
         GameObject newEntry = Instantiate(historyTextPrefab, historyContent);
         newEntry.GetComponent<TextMeshProUGUI>().text = text;
-        //スクロールバーを最下部に移動
+
+        // Contentのサイズを更新
+        LayoutRebuilder.ForceRebuildLayoutImmediate(historyContent);
+
+        // スクロールバーを最下部に移動
         StartCoroutine(ForceScrollDown());
     }
+
     private void RefocusInput()
     {
         commandInput.text = "";
         commandInput.ActivateInputField();
     }
-    IEnumerator ForceScrollDown()
-    {
-        //Content Size FitterとLayout Groupの更新を待つ
-        yield return new WaitForEndOfFrame();
-        scrollRect.verticalNormalizedPosition = 0f; //最下部にスクロール
-    }
-    // Update is called once per frame
-    void Update()
-    {
 
+    private IEnumerator ForceScrollDown()
+    {
+        yield return new WaitForEndOfFrame(); // Content Size FitterとLayout Groupの更新を待つ
+        scrollRect.verticalNormalizedPosition = 0f; // 最下部にスクロール
+    }
+
+    private IEnumerator CursorBlink()
+    {
+        while (true)
+        {
+            isCursorVisible = !isCursorVisible;
+            commandInput.placeholder.GetComponent<TextMeshProUGUI>().text = isCursorVisible ? "_" : ""; // カーソルの点滅
+            yield return new WaitForSeconds(0.5f); // カーソルの点滅間隔
+        }
     }
 }
