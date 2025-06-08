@@ -1,7 +1,7 @@
 Font: x12y16pxMaruMonica  Style: Regular
-Point Size: 114   SP/PD Ratio: 4.4%
+Point Size: 94   SP/PD Ratio: 5.3%
 
-Characters included: 7138/7150
+Characters included: 2705/2717
 Missing characters: 12
 Excluded characters: 0
 
