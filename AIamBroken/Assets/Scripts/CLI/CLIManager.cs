@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class CLIManager : MonoBehaviour
 {
     [Header("UI Components")]
-    //[SerializeField] private TMP_InputField commandInput;
     [SerializeField] private RectTransform historyContent; // ScrollView内のContentのRectTransform
     [SerializeField] private GameObject historyTextPrefab;
     [SerializeField] private ScrollRect scrollRect;
@@ -41,10 +40,6 @@ public class CLIManager : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(audioSource.clip);
-
-        // InputFieldでEnterが押された時のイベントを登録
-        //commandInput.onEndEdit.AddListener(OnCommandSubmit);
-
         // 起動シーケンスを再生
         if (playSetupSequence)
         {
@@ -53,8 +48,6 @@ public class CLIManager : MonoBehaviour
         else
         {
             // すぐに入力可能にする場合
-            //commandInput.interactable = true;
-            //RefocusInput();
             AddHistoryEntry(" > 初期完了. コマンドを入力してください...");
             CreateNewActiveLine();
             currentState = CLIState.AwaitingInput; // 入力待ち状態に変更
@@ -98,8 +91,6 @@ public class CLIManager : MonoBehaviour
     // --- 起動シーケンス用のコルーチン ---
     private IEnumerator RunSetupSequence()
     {
-        // シーケンス中は入力を不可にする
-        //commandInput.interactable = false;
 
         // 定義されたログを一行ずつ、ランダムな間隔をあけて表示
         foreach (string line in setupLogLines)
@@ -113,25 +104,9 @@ public class CLIManager : MonoBehaviour
         AddHistoryEntry(" > 初期完了. コマンドを入力してください...");
 
         // シーケンス完了後、入力を可能にする
-        //commandInput.interactable = true;
-        //RefocusInput();
         CreateNewActiveLine();
         currentState = CLIState.AwaitingInput; // 入力待ち状態に変更
     }
-
-    /*private void OnCommandSubmit(string command)
-    {
-        if (string.IsNullOrWhiteSpace(command)) return;
-
-        // コマンド履歴を追加
-        AddHistoryEntry("> " + command);
-
-        // コマンドを処理する
-        ProcessCommand(command);
-
-        // 入力欄をクリアして再フォーカス
-        RefocusInput();
-    }*/
 
     private void ProcessCommand(string command)
     {
@@ -139,7 +114,7 @@ public class CLIManager : MonoBehaviour
         currentState = CLIState.Processing;
 
         // 現在の入力行を、コマンドとして確定表示
-        UpdateActiveLineDisplay(true); // isFinal = true
+        UpdateActiveLineDisplay(); // isFinal = true
         currentInputString = ""; // 内部の入力文字列をクリア
 
         // コマンド処理と応答生成はコルーチンで行う
@@ -193,12 +168,6 @@ public class CLIManager : MonoBehaviour
         StartCoroutine(ForceScrollDown());
     }
 
-    // private void RefocusInput()
-    // {
-    //     commandInput.text = "";
-    //     commandInput.ActivateInputField();
-    // }
-
     private IEnumerator ForceScrollDown()
     {
         yield return new WaitForEndOfFrame(); // Content Size FitterとLayout Groupの更新を待つ
@@ -214,16 +183,11 @@ public class CLIManager : MonoBehaviour
     }
 
     // <<< ADDED: アクティブな行の表示を更新するメソッド >>>
-    private void UpdateActiveLineDisplay(bool isFinal = false)
+    private void UpdateActiveLineDisplay()
     {
         if (currentInputLineText != null)
         {
             string textToShow = promptSymbol + currentInputString;
-            // 確定表示（isFinal=true）の場合はカーソルを付けない
-            if (!isFinal) 
-            {
-                // ここでカーソル文字を追加せず、CursorBlinkCoroutineに任せる
-            }
             currentInputLineText.text = textToShow;
         }
     }
