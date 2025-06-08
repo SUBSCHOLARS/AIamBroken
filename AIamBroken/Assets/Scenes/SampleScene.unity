@@ -387,7 +387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e6af009d640214f8ce86af7cbc889d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfBins: 36
+  numberOfBins: 22
 --- !u!1 &808506365
 GameObject:
   m_ObjectHideFlags: 0

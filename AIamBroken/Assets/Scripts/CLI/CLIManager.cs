@@ -73,7 +73,7 @@ public class CLIManager : MonoBehaviour
         }
 
         // 完了メッセージを追加
-        AddHistoryEntry("\nInitialization complete. Awaiting command...");
+        AddHistoryEntry(" > 初期完了. コマンドを入力してください...");
 
         // シーケンス完了後、入力を可能にする
         commandInput.interactable = true;
