@@ -1973,6 +1973,7 @@ GameObject:
   - component: {fileID: 1344263271}
   - component: {fileID: 1344263273}
   - component: {fileID: 1344263272}
+  - component: {fileID: 1344263274}
   m_Layer: 3
   m_Name: CLI_Window_Prefab
   m_TagString: Untagged
@@ -2041,6 +2042,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1344263270}
   m_CullTransparentMesh: 1
+--- !u!114 &1344263274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344263270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 452f04b4d9c2a43a9a6d6c09db9d9e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commandInput: {fileID: 786999750}
+  historyContent: {fileID: 1174050559}
+  historyTextPrefab: {fileID: 1496484077}
+  scrollRect: {fileID: 2065588008}
 --- !u!1 &1496484077
 GameObject:
   m_ObjectHideFlags: 0
