@@ -2058,6 +2058,15 @@ MonoBehaviour:
   historyContent: {fileID: 1174050559}
   historyTextPrefab: {fileID: 1496484077}
   scrollRect: {fileID: 2065588008}
+  playSetupSequence: 1
+  setupLogLines:
+  - OMNISYSTEM BIOS v3.11... OK
+  - 'Memory Check: 65536 KB... OK'
+  - Initializing terminal interface...
+  - Connecting to host... secure link established.
+  - Awaiting ADAM protocol handshake...
+  minDelay: 0.1
+  maxDelay: 0.5
 --- !u!1 &1496484077
 GameObject:
   m_ObjectHideFlags: 0
