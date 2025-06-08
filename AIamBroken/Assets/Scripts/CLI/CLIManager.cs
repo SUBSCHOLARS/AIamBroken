@@ -122,7 +122,9 @@ public class CLIManager : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(historyContent);
         // RectTransformのサイズを強制的に更新
         historyContent.sizeDelta = new Vector2(historyContent.sizeDelta.x, historyContent.GetComponent<VerticalLayoutGroup>().preferredHeight);
-
+        // デバッグログを追加
+        Debug.Log($"History Content Size: {historyContent.sizeDelta}");
+        Debug.Log($"Child Count: {historyContent.childCount}");
         // スクロールバーを最下部に移動
         StartCoroutine(ForceScrollDown());
     }
