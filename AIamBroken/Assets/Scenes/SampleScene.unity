@@ -387,7 +387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e6af009d640214f8ce86af7cbc889d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfBins: 24
+  numberOfBins: 36
 --- !u!1 &808506365
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,7 +494,7 @@ MonoBehaviour:
   m_text: OMNITERMINAL
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44f4168acb3954cc7932dbc9f1af223a, type: 2}
-  m_sharedMaterial: {fileID: -6782483624899708508, guid: 44f4168acb3954cc7932dbc9f1af223a, type: 2}
+  m_sharedMaterial: {fileID: 5143672799486772181, guid: 44f4168acb3954cc7932dbc9f1af223a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
